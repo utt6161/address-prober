@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 
 export default StyleSheet.create({
     form_input_text: {
-        fontSize: 10,
+        fontSize: 11,
         paddingVertical: "0.6em"
     },
     white_text: {
@@ -16,10 +16,15 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: "white",
     },
+    half_width: {
+        width: "50%"
+    },
     full_width: {
         width: "100%"
     },
     lifetime_container: {
+        flexGrow: 100,
+        flexWrap: 'wrap',
         flexDirection: "row",
         justifyContent: "space-around"
     },
