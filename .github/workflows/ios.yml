@@ -1,6 +1,6 @@
 name: i have no mac :(
 on:
-  pull_request_target:
+  push:
     branches:
       - main
 jobs:

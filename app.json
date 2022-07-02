@@ -2,6 +2,7 @@
   "expo": {
     "name": "address-prober",
     "slug": "address-prober",
+    "icon": "./assets/images/icon.png",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -12,7 +13,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "win.znvk.adrpropbr",
+      "buildNumber": "1.0.0"
     }
   }
 }
