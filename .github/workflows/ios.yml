@@ -26,7 +26,7 @@ jobs:
         cache: yarn
 
     - name: Setup Expo and EAS
-      uses: expo/expo-github-action@7
+      uses: expo/expo-github-action@v7
       with:
         expo-version: latest
         eas-version: latest
