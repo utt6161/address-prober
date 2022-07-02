@@ -27,8 +27,15 @@ jobs:
         run: yarn install
         
       - name: Build app
+        id: results
         run: |
           eas build \
             --non-interactive \
             --platform=ios \
             --profile=development
+
+      - name: Attempt to see whats instide of it
+        run: echo "${{ steps.result }}"
+
+      - name: And also this
+        run: echo "${{ steps.result.outputs }}"
