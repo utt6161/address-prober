@@ -117,7 +117,7 @@ jobs:
         PA_SECRET: ${{ secrets.PA_SECRET }}
       with:
         name: APP_KEY
-        value: ${{ fromJson(steps.isItDeploy.outputs.response).publicKey }}
+        value: ${{ fromJson(steps.appetizeList.outputs.response).data[0].publicKey }}
         pa_token: ${{ env.PA_SECRET }}
     
       
