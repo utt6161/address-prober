@@ -24,7 +24,7 @@ jobs:
         url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
         method: 'GET'
     
-    - run: echo "${{ steps.appetizeList.outputs.value }}"
+    - run: echo "${{ steps.appetizeList.outputs.response }}"
 
     # The only way to check for empty/nonempty array ive found to be working.
     # Data field contains all deployed apps
