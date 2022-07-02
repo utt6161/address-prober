@@ -28,10 +28,10 @@ jobs:
 
       - name: get last link
         id: link
-        run: echo "::set-output name=value::$(expo url:ipa)"
+        run: expo url:ipa
 
       - name: retrieve
-        run: echo $${{ steps.link.output.value }}
+        run: echo $${{ steps.link.output.stdout }}
       
 
       
