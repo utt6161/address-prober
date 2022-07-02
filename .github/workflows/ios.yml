@@ -24,7 +24,7 @@ jobs:
       env:
         EXPO_SECRET: ${{ secrets.EXPO_SECRET }}
       with:
-        token: ${{ EXPO_SECRET }}
+        token: ${{ env.EXPO_SECRET }}
         expo-version: latest
         eas-version: latest
 
@@ -57,7 +57,7 @@ jobs:
       env: 
         APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
       with:
-        url: 'https://${{ APPETIZE_SECRET }}@api.appetize.io/v1/apps'
+        url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
         method: 'GET'
     
     # The only way to check for empty/nonempty array ive found to be working.
@@ -79,11 +79,11 @@ jobs:
       env:
         appKey: ${{ secrets.APP_KEY }}
         APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
-        token: ${{ EXPO_SECRET }}
+        token: ${{ secrets.EXPO_SECRET }}
       if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && appKey != null}}
       uses: fjogeleit/http-request-action@v1
       with:
-        url: 'https://${{ APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ APP_KEY }}'
+        url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ env.APP_KEY }}'
         method: 'POST'
         data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
     
@@ -95,7 +95,7 @@ jobs:
       env:
         APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
       with:
-        url: 'https://${{ APPETIZE_SECRET }}@api.appetize.io/v1/apps'
+        url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
         method: 'POST'
         data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
     
@@ -106,6 +106,6 @@ jobs:
       with:
         name: APPETIZE_SECRET
         value: ${{ fromJson(steps.isItDeploy.outputs.response).publicKey }}
-        pa_token: ${{ PA_SECRET }}
+        pa_token: ${{ env.PA_SECRET }}
     
       
