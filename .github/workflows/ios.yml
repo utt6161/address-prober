@@ -50,11 +50,16 @@ jobs:
           --platform=ios \
           --profile=development
 
-    - name: get last link
-      id: link
-      uses: mathiasvr/command-output@v1
-      with:
-        run: expo url:ipa
+
+    # retrieve the link to the build app
+    - name: get last android
+        id: link
+        uses: mathiasvr/command-output@v1
+        with:
+          run: eas build:list --json --limit=1 --platform=ios | jq '.[0].artifacts.buildUrl'
+
+      - name: retrieve
+        run: echo $${{ steps.link.outputs.stdout }}
         
     # Appetize API endpoint that returns
     # a list of all deployed applications
