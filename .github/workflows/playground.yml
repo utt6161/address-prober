@@ -1,3 +1,4 @@
+name: playground
 on:
   push:
     branches:
@@ -23,17 +24,19 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: 📦 Install dependencies
-        run: yarn install
+      - name: get list
+        run: eas build:list
+      # - name: 📦 Install dependencies
+      #   run: yarn install
 
-      - name: get last link
-        id: link
-        uses: mathiasvr/command-output@v1
-        with:
-          run: expo url:ipa
+      # - name: get last link
+      #   id: link
+      #   uses: mathiasvr/command-output@v1
+      #   with:
+      #     run: expo url:ipa
 
-      - name: retrieve
-        run: echo https$${{ steps.link.outputs.stdout }}
+      # - name: retrieve
+      #   run: echo https$${{ steps.link.outputs.stdout }}
       
 
       
