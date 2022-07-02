@@ -21,8 +21,10 @@ jobs:
 
     - name: Setup Expo and EAS
       uses: expo/expo-github-action@v7
+      env:
+        EXPO_SECRET: ${{ secrets.EXPO_SECRET }}
       with:
-        token: ${{ secrets.EXPO_SECRET }}
+        token: ${{ EXPO_SECRET }}
         expo-version: latest
         eas-version: latest
 
@@ -52,8 +54,10 @@ jobs:
     - name: Check if its a new deploy or redeploy
       id: appetizeList
       uses: fjogeleit/http-request-action@v1
+      env: 
+        APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
       with:
-        url: 'https://${{ secrets.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
+        url: 'https://${{ APPETIZE_SECRET }}@api.appetize.io/v1/apps'
         method: 'GET'
     
     # The only way to check for empty/nonempty array ive found to be working.
@@ -74,10 +78,12 @@ jobs:
     - name: Deploying...
       env:
         appKey: ${{ secrets.APP_KEY }}
-      if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && env.appKey != null}}
+        APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
+        token: ${{ EXPO_SECRET }}
+      if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && appKey != null}}
       uses: fjogeleit/http-request-action@v1
       with:
-        url: 'https://${{ secrets.APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ secrets.APP_KEY }}'
+        url: 'https://${{ APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ APP_KEY }}'
         method: 'POST'
         data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
     
@@ -86,16 +92,20 @@ jobs:
     
     - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
       uses: fjogeleit/http-request-action@v1
+      env:
+        APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
       with:
-        url: 'https://${{ secrets.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
+        url: 'https://${{ APPETIZE_SECRET }}@api.appetize.io/v1/apps'
         method: 'POST'
         data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
     
     - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
       uses: gliech/create-github-secret-action@v1
+      env:
+        PA_SECRET: ${{ secrets.PA_SECRET }}
       with:
         name: APPETIZE_SECRET
         value: ${{ fromJson(steps.isItDeploy.outputs.response).publicKey }}
-        pa_token: ${{ secrets.PA_SECRET }}
+        pa_token: ${{ PA_SECRET }}
     
       
