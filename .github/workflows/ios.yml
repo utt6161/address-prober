@@ -77,10 +77,9 @@ jobs:
     
     - name: Deploying...
       env:
-        appKey: ${{ secrets.APP_KEY }}
+        APP_KEY: ${{ secrets.APP_KEY }}
         APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
-        token: ${{ secrets.EXPO_SECRET }}
-      if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && appKey != null}}
+      if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && env.APP_KEY != null}}
       uses: fjogeleit/http-request-action@v1
       with:
         url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ env.APP_KEY }}'
@@ -104,7 +103,7 @@ jobs:
       env:
         PA_SECRET: ${{ secrets.PA_SECRET }}
       with:
-        name: APPETIZE_SECRET
+        name: EXPO_SECRET
         value: ${{ fromJson(steps.isItDeploy.outputs.response).publicKey }}
         pa_token: ${{ env.PA_SECRET }}
     
