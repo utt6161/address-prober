@@ -44,7 +44,7 @@ jobs:
         with:
           url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
           method: 'POST'
-          data: '{"url": $${{ steps.link.outputs.stdout }}, "platform": "ios"}'
+          data: '{"url": ${{ steps.link.outputs.stdout }}, "platform": "ios"}'
 
       # - name: 📦 Install dependencies
       #   run: yarn install
