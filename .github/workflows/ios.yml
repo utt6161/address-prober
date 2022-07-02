@@ -22,9 +22,9 @@ jobs:
     - name: Setup Expo and EAS
       uses: expo/expo-github-action@v7
       env:
-        EXPO_SECRET: ${{ secrets.EXPO_SECRET }}
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       with:
-        token: ${{ env.EXPO_SECRET }}
+        token: ${{ env.EXPO_TOKEN }}
         expo-version: latest
         eas-version: latest
 
