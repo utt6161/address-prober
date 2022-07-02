@@ -1,0 +1,104 @@
+name: i have no mac :(
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node: [16.x]
+    steps:
+    - name: Setup repo
+      uses: actions/checkout@v2
+
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node }}
+        cache: yarn
+
+    - name: Setup Expo and EAS
+      uses: expo/expo-github-action@v7
+      with:
+        token: ${{ secrets.EXPO_SECRET }}
+        expo-version: latest
+        eas-version: latest
+
+    - name: Setup EAS local builds
+      run: yarn global add eas-cli-local-build-plugin
+
+    - name: Install dependencies
+      run: yarn
+    
+    # Compiles react-native locally on
+    # github's runner and puts into
+    # app-build directory
+
+    - name: Build app
+      run: |
+        eas build --local \
+          --non-interactive \
+          --output=./app-build \
+          --platform=ios \
+          --profile=development
+    - name: Upload binary
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-ios
+        path: app-build
+        
+    # Appetize API endpoint that returns
+    # a list of all deployed applications
+    
+    - name: Check if its a new deploy or redeploy
+      id: appetizeList
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://${{ secrets.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
+        method: 'GET'
+    
+    # The only way to check for empty/nonempty array ive found to be working.
+    # Data field contains all deployed apps
+    
+    - uses: haya14busa/action-cond@v1
+      id: printCondition
+      with:
+        cond: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' }}
+        if_true: "Verdict: its redeploy"
+        if_false: "Verdict: its a new deploy"
+    - run: echo "${{ steps.printCondition.outputs.value }}"
+    
+    # In case data is not empty,
+    # (which in a stardart situation means that the deployed app's public key is set)
+    # proceed with "update" endpoint
+    
+    - name: Deploying...
+      env:
+        appKey: ${{ secrets.APP_KEY }}
+      if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && env.appKey != null}}
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://${{ secrets.APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ secrets.APP_KEY }}'
+        method: 'POST'
+        data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
+    
+    # Otherwise with "create" endpoint
+    # and set the repo secret, retrieved from response
+    
+    - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://${{ secrets.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
+        method: 'POST'
+        data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
+    
+    - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: APPETIZE_SECRET
+        value: ${{ fromJson(steps.isItDeploy.outputs.response).publicKey }}
+        pa_token: ${{ secrets.PA_SECRET }}
+    
+      
