@@ -29,7 +29,8 @@ jobs:
       - name: get last link
         id: link
         uses: mathiasvr/command-output@v1
-        run: expo url:ipa
+        with:
+          run: expo url:ipa
 
       - name: retrieve
         run: echo $${{ steps.link.output.stdout }}
