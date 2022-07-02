@@ -48,7 +48,7 @@ jobs:
           --non-interactive \
           --output=./app-build \
           --platform=ios \
-          --profile=development
+          --profile=simulator
     - name: Upload binary
       uses: actions/upload-artifact@v2
       with:
