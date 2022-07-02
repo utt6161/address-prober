@@ -1,4 +1,4 @@
-name: i have no mac :(
+name: playground
 on:
   push:
     branches:
@@ -24,51 +24,53 @@ jobs:
         url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
         method: 'GET'
     
+    - run: echo "${{ steps.printCondition.outputs.value }}"
+
     # The only way to check for empty/nonempty array ive found to be working.
     # Data field contains all deployed apps
     
-    - uses: haya14busa/action-cond@v1
-      id: printCondition
-      with:
-        cond: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' }}
-        if_true: "Verdict: its redeploy"
-        if_false: "Verdict: its a new deploy"
-    - run: echo "${{ steps.printCondition.outputs.value }}"
+    # - uses: haya14busa/action-cond@v1
+    #   id: printCondition
+    #   with:
+    #     cond: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' }}
+    #     if_true: "Verdict: its redeploy"
+    #     if_false: "Verdict: its a new deploy"
+    # - run: echo "${{ steps.printCondition.outputs.value }}"
     
     # In case data is not empty,
     # (which in a stardart situation means that the deployed app's public key is set)
     # proceed with "update" endpoint
     
-    - name: Deploying...
-      env:
-        APP_KEY: ${{ secrets.APP_KEY }}
-        APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
-      if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && env.APP_KEY != null}}
-      uses: fjogeleit/http-request-action@v1
-      with:
-        url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ env.APP_KEY }}'
-        method: 'POST'
-        data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
+    # - name: Deploying...
+    #   env:
+    #     APP_KEY: ${{ secrets.APP_KEY }}
+    #     APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
+    #   if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && env.APP_KEY != null}}
+    #   uses: fjogeleit/http-request-action@v1
+    #   with:
+    #     url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ env.APP_KEY }}'
+    #     method: 'POST'
+    #     data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
     
     # Otherwise with "create" endpoint
     # and set the repo secret, retrieved from response
     
-    - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
-      uses: fjogeleit/http-request-action@v1
-      env:
-        APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
-      with:
-        url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
-        method: 'POST'
-        data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
+    # - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
+    #   uses: fjogeleit/http-request-action@v1
+    #   env:
+    #     APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
+    #   with:
+    #     url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps'
+    #     method: 'POST'
+    #     data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
     
-    - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
-      uses: gliech/create-github-secret-action@v1
-      env:
-        PA_SECRET: ${{ secrets.PA_SECRET }}
-      with:
-        name: EXPO_SECRET
-        value: ${{ fromJson(steps.isItDeploy.outputs.response).publicKey }}
-        pa_token: ${{ env.PA_SECRET }}
+    # - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
+    #   uses: gliech/create-github-secret-action@v1
+    #   env:
+    #     PA_SECRET: ${{ secrets.PA_SECRET }}
+    #   with:
+    #     name: EXPO_SECRET
+    #     value: ${{ fromJson(steps.isItDeploy.outputs.response).publicKey }}
+    #     pa_token: ${{ env.PA_SECRET }}
     
       
