@@ -33,7 +33,10 @@ jobs:
           run: expo url:ipa
 
       - name: retrieve
-        run: echo $${{ steps.link.output.stdout }}
+        run: echo $${{ steps.link.outputs.stdout }}
+
+      - name: retrieve
+      run: echo $${{ steps.link.outputs.stdout }}
       
 
       
