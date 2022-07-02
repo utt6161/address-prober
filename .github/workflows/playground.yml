@@ -27,7 +27,6 @@ jobs:
     - run: echo "${{ steps.appetizeList.outputs.response }}"
     - run: echo "${{ fromJson(steps.appetizeList.outputs.response).data == '[]'}}"
     - run: echo "${{ fromJson(steps.appetizeList.outputs.response.data) == '[]'}}"
-    - run: echo "${{ fromJson(steps.appetizeList.outputs.response).data == []}}"
 
     # The only way to check for empty/nonempty array ive found to be working.
     # Data field contains all deployed apps
