@@ -28,10 +28,12 @@ jobs:
 
       - name: get last link
         id: link
-        run: expo url:ipa
+        uses: mathiasvr/command-output@v1
+        with:
+          run: expo url:ipa
 
       - name: retrieve
-        run: echo $${{ steps.link.outputs.value }}
+        run: echo https$${{ steps.link.outputs.stdout }}
       
 
       
