@@ -43,10 +43,10 @@ jobs:
     # app-build directory
 
     - name: Build app
+      id: results
       run: |
-        eas build --local \
+        eas build \
           --non-interactive \
-          --output=./app-build \
           --platform=ios \
           --profile=development
 
