@@ -29,7 +29,14 @@ jobs:
 
 
       - name: get last android
-        run: jq '.[0].artifacts.buildUrl'
+        id: link
+        uses: mathiasvr/command-output@v1
+        with:
+          run: eas build:list --json --limit=1 --platform=android | jq '.[0].artifacts.buildUrl'
+
+      - name: retrieve
+        run: echo https$${{ steps.link.outputs.stdout }}
+
       # - name: 📦 Install dependencies
       #   run: yarn install
 
