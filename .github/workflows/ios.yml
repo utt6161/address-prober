@@ -73,7 +73,7 @@ jobs:
     - uses: haya14busa/action-cond@v1
       id: printCondition
       with:
-        cond: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' }}
+        cond: ${{ fromJson(steps.appetizeList.outputs.response).data[0] != null  }}
         if_true: "Verdict: its redeploy"
         if_false: "Verdict: its a new deploy"
     - run: echo "${{ steps.printCondition.outputs.value }}"
@@ -86,7 +86,7 @@ jobs:
       env:
         APP_KEY: ${{ secrets.APP_KEY }}
         APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
-      if: ${{ fromJson(steps.appetizeList.outputs.response).data != '[]' && env.APP_KEY != null}}
+      if: ${{ fromJson(steps.appetizeList.outputs.response).data[0] != null  && env.APP_KEY != null}}
       uses: fjogeleit/http-request-action@v1
       with:
         url: 'https://${{ env.APPETIZE_SECRET }}@api.appetize.io/v1/apps/${{ env.APP_KEY }}'
@@ -96,7 +96,7 @@ jobs:
     # Otherwise with "create" endpoint
     # and set the repo secret, retrieved from response
     
-    - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
+    - if: ${{ fromJson(steps.appetizeList.outputs.response).data[0] == null  }}
       uses: fjogeleit/http-request-action@v1
       env:
         APPETIZE_SECRET: ${{ secrets.APPETIZE_SECRET }}
@@ -105,7 +105,7 @@ jobs:
         method: 'POST'
         data: '{"file": "./app-build/app-ios.tar.gz", "platform": "ios"}'
     
-    - if: ${{ fromJson(steps.appetizeList.outputs.response).data == '[]' }}
+    - if: ${{ fromJson(steps.appetizeList.outputs.response).data[0] == null  }}
       uses: gliech/create-github-secret-action@v1
       env:
         PA_SECRET: ${{ secrets.PA_SECRET }}
