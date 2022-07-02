@@ -28,15 +28,10 @@ jobs:
 
       - name: get last link
         id: link
-        uses: mathiasvr/command-output@v1
-        with:
-          run: expo url:ipa
+        run: expo url:ipa
 
       - name: retrieve
-        run: echo $${{ steps.link.outputs.stdout }}
-
-      - name: retrieve
-        run: echo $${{ steps.link.outputs.stdout }}
+        run: echo $${{ steps.link.outputs.value }}
       
 
       
