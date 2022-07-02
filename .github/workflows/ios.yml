@@ -51,10 +51,10 @@ jobs:
           --profile=development
 
     - name: get last link
-        id: link
-        uses: mathiasvr/command-output@v1
-        with:
-          run: expo url:ipa
+      id: link
+      uses: mathiasvr/command-output@v1
+      with:
+        run: expo url:ipa
         
     # Appetize API endpoint that returns
     # a list of all deployed applications
