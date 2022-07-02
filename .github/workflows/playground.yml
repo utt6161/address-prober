@@ -36,7 +36,7 @@ jobs:
         run: echo $${{ steps.link.outputs.stdout }}
 
       - name: retrieve
-      run: echo $${{ steps.link.outputs.stdout }}
+        run: echo $${{ steps.link.outputs.stdout }}
       
 
       
