@@ -26,6 +26,10 @@ jobs:
 
       - name: get list
         run: eas build:list
+
+
+      - name: get last android
+        run: eas build:list --json --limit=1 --platform=ios | jq '.[0].artifacts.buildUrl'
       # - name: 📦 Install dependencies
       #   run: yarn install
 
