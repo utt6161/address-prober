@@ -25,17 +25,27 @@ jobs:
 
       - name: 📦 Install dependencies
         run: yarn install
+
+      - name: get last link
+        id: link
+        run: expo url:ipa
+
+      - name: retrieve
+      - run: echo $${{ steps.link }}
+      
+
+      
         
-      - name: Build app
-        id: results
-        run: |
-          eas build \
-            --non-interactive \
-            --platform=ios \
-            --profile=development
+      # - name: Build app
+      #   id: results
+      #   run: |
+      #     eas build \
+      #       --non-interactive \
+      #       --platform=ios \
+      #       --profile=development
 
-      - name: Attempt to see whats instide of it
-        run: echo "${{ steps.result }}"
+      # - name: Attempt to see whats instide of it
+      #   run: echo "${{ steps.result }}"
 
-      - name: And also this
-        run: echo "${{ steps.result.outputs }}"
+      # - name: And also this
+      #   run: echo "${{ steps.result.outputs }}"
