@@ -25,8 +25,8 @@ jobs:
         run: yarn install
         
       - name: Build app
-      run: |
-        eas build \
-          --non-interactive \
-          --platform=ios \
-          --profile=development
+        run: |
+          eas build \
+            --non-interactive \
+            --platform=ios \
+            --profile=development
