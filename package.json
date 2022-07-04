@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo-google-fonts/major-mono-display": "^0.2.2",
     "@expo-google-fonts/oxygen-mono": "^0.2.2",
+    "@gorhom/portal": "^1.0.14",
     "@react-native-picker/picker": "2.4.0",
     "@reduxjs/toolkit": "^1.8.2",
     "expo": "~45.0.0",

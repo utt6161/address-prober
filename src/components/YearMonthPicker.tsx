@@ -1,5 +1,6 @@
+import { Portal } from "@gorhom/portal";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { SafeAreaView, TextInput, View, StyleSheet, Text, TouchableOpacity, StyleProp, ViewStyle } from "react-native"
+import { ScrollView, TextInput, View, StyleSheet, Text, TouchableOpacity, StyleProp, ViewStyle } from "react-native"
 import { chevronDown } from "./Images";
 
 // const strToNum = (textInput: string): number =>
@@ -17,6 +18,9 @@ interface INumPicker {
     style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[] | {}
 }
 
+const yearLimit = 120
+const monthLimit = 12
+
 export const YearMonthPicker = ({ type, textInput, setTextInput, style }: INumPicker) => {
     const [visible, setVisible] = useState(false);
     const [updatedPlaceholder, setUpdatedPlaceholed] = useState(type.toString())
@@ -28,25 +32,44 @@ export const YearMonthPicker = ({ type, textInput, setTextInput, style }: INumPi
     const whichToRender = (visible: boolean) =>
         visible
             ?
+            <ScrollView>
             <View style={style}>
-                <TextInput
-                    keyboardType="number-pad"
-                    returnKeyType="done"
-                    textAlign="center"
-                    style={styles.input}
-                    onChangeText={(text) => {
-                        let num = Number.parseInt(text.replace(/[^0-9]/g, ""))
-                        
-                        switch (num) {
-                            case 0: setUpdatedPlaceholed(`> ${type}`); break;
-                            case 1: setUpdatedPlaceholed(`${num} ${type}`); break;
-                            default: setUpdatedPlaceholed(`${num} ${type}s`)
-                        }
-                        setTextInput(num)
-                    }}
-                    value={textInput.toString()}
-                    maxLength={type == PickerType.MONTH ? 2 : 3} />
+                    {/* <TouchableOpacity
+                    style={[{
+                        position: 'absolute',
+                        zIndex: 1,
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        height: "100%",
+                    }]}
+                    onPress={toggleSwitch}
+                    testID="CUM"
+                /> */}
+                    <TextInput
+                        keyboardType="number-pad"
+                        returnKeyType="done"
+                        textAlign="center"
+                        // style={[styles.input, {
+                        //     zIndex: 2
+                        // }]}
+                        onChangeText={(text) => {
+                            let num = (text == "" ? 0 : Number.parseInt(text.replace(/[^0-9]/g, "0")))
+                            if (type == PickerType.MONTH) {
+                                if (num > monthLimit) num = monthLimit
+                            } else
+                                if (num > yearLimit) num = yearLimit
+                            switch (num) {
+                                case 0: setUpdatedPlaceholed(`> ${type}`); break;
+                                case 1: setUpdatedPlaceholed(`${num} ${type}`); break;
+                                default: setUpdatedPlaceholed(`${num} ${type}s`)
+                            }
+                            setTextInput(num)
+                        }}
+                        value={textInput.toString()}
+                        maxLength={type == PickerType.MONTH ? 2 : 3} />
             </View>
+            </ScrollView>
             :
             <View style={style}>
                 <TouchableOpacity
