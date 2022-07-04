@@ -2,7 +2,7 @@
   "expo": {
     "name": "address-prober",
     "slug": "address-prober",
-    "icon": "./assets/images/icon.png",
+    "icon": "./src/assets/images/icon.png",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",

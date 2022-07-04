@@ -14,3 +14,4 @@ web-build/
 .expo_shared
 # macOS
 .DS_Store
+.vercel
