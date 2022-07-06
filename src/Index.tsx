@@ -11,7 +11,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { Text, TouchableOpacity, useWindowDimensions, View, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 } from "uuid";
 import 'react-native-get-random-values';
@@ -105,7 +105,7 @@ export default function Index() {
     }, [selectedItem])
 
     return (
-        <View style={[{ flex: 1 }]}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             {isModalVisible && <ModalMessage toggleModal={toggleModal} setModalVisible={setModalVisible} text={modalText} isModalVisible={isModalVisible} />}
             <LinearGradient
                 // Background Linear Gradients
@@ -197,7 +197,7 @@ export default function Index() {
                     </>
                 }
             </View>}
-        </View >
+        </ScrollView >
     )
 }
 

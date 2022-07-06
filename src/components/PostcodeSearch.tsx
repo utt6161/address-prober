@@ -8,7 +8,7 @@ import { magnifyingGlass } from "./utils/Images"
 const PostcodeSearch = (props: {
     style: StyleProp<ViewStyle> | StyleProp<ViewStyle>[],
     setPostcode: React.Dispatch<React.SetStateAction<string>>,
-    setResult: React.Dispatch<React.SetStateAction<IProperty[]>>
+    setResult: React.Dispatch<React.SetStateAction<IProperty[]>>,
     postcode: string,
     isLoading: boolean,
     trigger: MutationTrigger<MutationDefinition<string, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, {}, FetchBaseQueryMeta>, never, IApiResponse, "streetsApi">>

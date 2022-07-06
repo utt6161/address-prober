@@ -14,7 +14,6 @@ export const EditSave = (props: {
     const { fontScale } = useWindowDimensions()
 
     const headline = (headline: string) => <View style={[{
-        flex: 1
     }]}>
         <Text style={{
             fontSize: 15 / fontScale,

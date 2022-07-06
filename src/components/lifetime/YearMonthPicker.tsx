@@ -92,15 +92,15 @@ export const YearMonthPicker = (props: INumPicker) => {
                         borderColor: "white",
                         borderWidth: 1,
                         flexDirection: "row",
-                        padding: 15
+                        padding: 15,
+                        flex: 1
                     }]}
                 >
                     <Text style={{
-                        textAlign: "center", color: "white", fontSize: 15 / fontScale,
+                        flex: 1, textAlign: "center", color: "white", fontSize: 15 / fontScale,
                         margin: "auto", paddingRight: 10
                     }}>
                         {updatedPlaceholder}
-
                     </Text>
                     <View>
                         {chevronDown}
