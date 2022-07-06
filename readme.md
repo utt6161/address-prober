@@ -4,7 +4,7 @@
 
 ```sh
 
-cd ./expo-yochat
+cd ./address-prober
 ```
 
 ### 2. Install dependencies
