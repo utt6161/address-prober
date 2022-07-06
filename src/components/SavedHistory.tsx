@@ -1,7 +1,7 @@
 
 import React from "react"
 import { StyleProp, View, ViewStyle, Text, ScrollView, useWindowDimensions, TouchableOpacity } from "react-native"
-import { trashCan } from "./Images"
+import { trashCan } from "./utils/Images"
 import { useDispatch } from 'react-redux';
 import { remove } from "../store/historySlice";
 

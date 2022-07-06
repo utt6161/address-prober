@@ -1,31 +1,32 @@
 
 // import of react fixes this
 // https://github.com/expo/expo/issues/17779
-import * as React from 'react';
-import { Button, Text, TouchableOpacity, TouchableOpacityBase, useWindowDimensions, View } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { cStyles } from "./styles/styles"
-import LifeAtForm from "./components/LifeAtForm"
-import { SavedHistory } from './components/SavedHistory';
+import {
+    MajorMonoDisplay_400Regular
+} from '@expo-google-fonts/major-mono-display';
 import {
     OxygenMono_400Regular,
     useFonts
-} from '@expo-google-fonts/oxygen-mono'
-import {
-    MajorMonoDisplay_400Regular
-} from '@expo-google-fonts/major-mono-display'
-import PostcodeSearch from './components/PostcodeSearch';
+} from '@expo-google-fonts/oxygen-mono';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { IProperty } from './store/interfaces';
+import { Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 } from "uuid";
+import 'react-native-get-random-values';
 import { AddressPicker } from './components/AddressPicker';
-import Mock from './components/ResponseMock'
-import { doubleChevron } from './components/Images';
 import { EditSave } from './components/EditSave';
-import { add, getSelector } from './store/historySlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { useGetByPostcodeMutation } from './store/streetsAPI';
+import { doubleChevron } from './components/utils/Images';
+import LifeAtForm from "./components/lifetime/LifeAtForm";
 import { ModalMessage } from './components/Modal';
-import { v4 } from "uuid"
+import PostcodeSearch from './components/PostcodeSearch';
+import Mock from './components/ResponseMock';
+import { SavedHistory } from './components/SavedHistory';
+import { add, getAdds, getSelector } from './store/historySlice';
+import { IProperty } from './store/interfaces';
+import { useGetByPostcodeMutation } from './store/streetsAPI';
+import { cStyles, sharedStyles } from "./styles/styles";
 
 export default function Index() {
     let [fontsLoaded] = useFonts({
@@ -33,8 +34,8 @@ export default function Index() {
         MajorMonoDisplay_400Regular
     });
     const { width, fontScale } = useWindowDimensions();
-    const [yearsInput, setYearsInput] = useState(0)
-    const [monthsInput, setMonthsInput] = useState(0)
+    const [yearsInput, setYearsInput] = useState<string>("")
+    const [monthsInput, setMonthsInput] = useState<string>("")
     const [postcode, setPostcode] = useState("")
     const [streetsArray, setStreetsArray] = useState<IProperty[]>([])
     const [selectedItem, setSelectedItem] = useState<IProperty>()
@@ -45,6 +46,8 @@ export default function Index() {
     const dispatch = useDispatch()
     const savedHistory = useSelector(getSelector)
     const [trigger, { data, error, isLoading, isSuccess }] = useGetByPostcodeMutation()
+
+    const adds = useSelector(getAdds)
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalText, setModalText] = useState("")
@@ -58,8 +61,8 @@ export default function Index() {
         } else {
             dispatch(add({
                 id: v4(),
-                years: yearsInput,
-                months: monthsInput,
+                years: yearsInput == "" ? 0 : Number.parseInt(yearsInput),
+                months: monthsInput == "" ? 0 : Number.parseInt(monthsInput),
                 address: `${editAddrLineI}, ${editAddrLineII ? editAddrLineII + ", " : ""} ${editCity}, ${editPostcode}`
             }))
         }
@@ -80,10 +83,11 @@ export default function Index() {
 
     useEffect(() => {
         setSelectedItem(undefined)
+        setPostcode("")
         setStreetsArray([])
-        setYearsInput(0)
-        setMonthsInput(0)
-    }, [savedHistory])
+        setYearsInput("")
+        setMonthsInput("")
+    }, [adds])
 
 
     useEffect(() => {
@@ -101,39 +105,43 @@ export default function Index() {
     }, [selectedItem])
 
     return (
-        <View style={[cStyles(fontScale, width).bg_container]}>
+        <View style={[{ flex: 1 }]}>
             {isModalVisible && <ModalMessage toggleModal={toggleModal} setModalVisible={setModalVisible} text={modalText} isModalVisible={isModalVisible} />}
             <LinearGradient
                 // Background Linear Gradients
                 colors={["rgba(91,0,137,0.8)", "rgba(247,0,107,1)"]}
-                style={cStyles(fontScale, width).background}
+                style={sharedStyles.background}
                 start={{ x: 0, y: 1 }}
                 end={{ x: 1, y: 1 }}
             />
 
-            {fontsLoaded && <View style={cStyles(fontScale, width).content}>
+            {fontsLoaded && <View style={sharedStyles.content}>
+
                 <Text style={[
                     cStyles(fontScale, width).headline,
-                    cStyles(fontScale, width).monohead,
-                    cStyles(fontScale, width).white_text,
-                    { textAlign: "center" }
+                    { textAlign: "center", color: "white", fontFamily: "MajorMonoDisplay_400Regular" }
                 ]}>Address search</Text>
+
                 <Text style={[
-                    cStyles(fontScale, width).monotext,
                     cStyles(fontScale, width).undertext,
-                    cStyles(fontScale, width).white_text,
-                    { textAlign: "center" }
+                    { textAlign: "center", color: "white", fontFamily: "OxygenMono_400Regular" }
                 ]}>Please enter your address</Text>
-                <View style={cStyles(fontScale, width).top_line} />
+
+                <View style={[cStyles(fontScale, width).form, sharedStyles.top_line, {
+                    padding: 5
+                }]} />
+
                 <SavedHistory
                     data={savedHistory}
                     style={[cStyles(fontScale, width).form]} />
+
                 <LifeAtForm
                     setMonthsInput={setMonthsInput}
                     setYearsInput={setYearsInput}
                     monthsInput={monthsInput}
                     yearsInput={yearsInput}
                     style={[cStyles(fontScale, width).form]} />
+
                 <PostcodeSearch
                     isLoading={isLoading}
                     trigger={trigger}
@@ -141,6 +149,7 @@ export default function Index() {
                     setPostcode={setPostcode}
                     postcode={postcode}
                     style={[cStyles(fontScale, width).form]} />
+
                 {streetsArray.length != 0 &&
                     <AddressPicker
                         isLoading={isLoading}
@@ -148,6 +157,7 @@ export default function Index() {
                         items={streetsArray}
                         setSelectedItem={setSelectedItem} />
                 }
+
                 {selectedItem != undefined &&
                     <><View style={[{
                         justifyContent: "center",

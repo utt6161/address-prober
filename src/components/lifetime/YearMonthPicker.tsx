@@ -1,7 +1,8 @@
-import { Portal } from "@gorhom/portal";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useWindowDimensions, TextInput, View, StyleSheet, Text, TouchableOpacity, StyleProp, ViewStyle, Keyboard } from "react-native"
-import { chevronDown } from "./Images";
+import { useSelector } from "react-redux";
+import { getAdds } from "../../store/historySlice";
+import { chevronDown } from "../utils/Images";
 
 // const strToNum = (textInput: string): number =>
 //     Number.parseInt(textInput.replace(/[^0-9]/g, ""))
@@ -13,8 +14,8 @@ export enum PickerType {
 
 interface INumPicker {
     type: PickerType.MONTH | PickerType.YEAR,
-    setTextInput: Dispatch<SetStateAction<number>>,
-    textInput: number,
+    setTextInput: Dispatch<SetStateAction<string>>,
+    textInput: string,
     style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[] | {}
 }
 
@@ -25,9 +26,16 @@ export const YearMonthPicker = (props: INumPicker) => {
     const [visible, setVisible] = useState(false);
     const [updatedPlaceholder, setUpdatedPlaceholed] = useState(`Select ${props.type.toString()}s`)
     const { width, fontScale } = useWindowDimensions();
+    const adds = useSelector(getAdds)
     const toggleSwitch = () => {
         setVisible(!visible);
     };
+
+
+    // part of historyAdd cleanup process
+    useEffect(() => {
+        setUpdatedPlaceholed(`Select ${props.type.toLowerCase()}s`)
+    }, [adds])
 
     const hintRender = props.type == PickerType.MONTH ?
         <Text style={{ textAlign: "center", color: "white", fontSize: 12 / fontScale }}>
@@ -39,7 +47,12 @@ export const YearMonthPicker = (props: INumPicker) => {
         </Text>
 
     const numFormatter = (text: string) => {
-        let num = (text == "" ? 0 : Number.parseInt(text.replace(/[^0-9]/g, "0")))
+        if (text == "") {
+            setUpdatedPlaceholed(`Select ${props.type.toLowerCase()}s`)
+            props.setTextInput(text)
+            return
+        }
+        let num = Number.parseInt(text.replace(/[^0-9]/g, "0"))
         if (props.type == PickerType.MONTH) {
             if (num > monthLimit) num = monthLimit
         } else
@@ -49,7 +62,7 @@ export const YearMonthPicker = (props: INumPicker) => {
             case 1: setUpdatedPlaceholed(`${num} ${props.type}`); break;
             default: setUpdatedPlaceholed(`${num} ${props.type}s`)
         }
-        props.setTextInput(num)
+        props.setTextInput(num.toString())
     }
 
     const whichToRender = (visible: boolean) =>
@@ -61,8 +74,11 @@ export const YearMonthPicker = (props: INumPicker) => {
                     returnKeyType='done'
                     textAlign="center"
                     style={[styles.input, { fontSize: 20 / fontScale }]}
-                    onChangeText={numFormatter}
-                    value={props.textInput.toString()}
+                    onChangeText={(text) => {
+                        console.log(text)
+                        numFormatter(text)
+                    }}
+                    value={props.textInput != undefined ? props.textInput.toString() : ""}
                     onBlur={toggleSwitch}
                     autoFocus={true}
                     maxLength={props.type == PickerType.MONTH ? 2 : 3} />
@@ -76,15 +92,15 @@ export const YearMonthPicker = (props: INumPicker) => {
                         borderColor: "white",
                         borderWidth: 1,
                         flexDirection: "row",
-                        padding: 15,
-                        height: "100%"
+                        padding: 15
                     }]}
                 >
                     <Text style={{
-                        flex: 1, textAlign: "center", color: "white", fontSize: 15 / fontScale,
+                        textAlign: "center", color: "white", fontSize: 15 / fontScale,
                         margin: "auto", paddingRight: 10
                     }}>
                         {updatedPlaceholder}
+
                     </Text>
                     <View>
                         {chevronDown}

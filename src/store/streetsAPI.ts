@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import 'dotenv/config'
 import { IApiResponse } from './interfaces'
+import { ADDRESS_BASE_URL, ADDRESS_API_KEY } from "@env"
 
-const apiBaseUrl = process.env.ADDRESS_BASE_URL
-const apiKey = process.env.ADDRESS_API_KEY
+const apiBaseUrl = ADDRESS_BASE_URL
+const apiKey = ADDRESS_API_KEY
 
 export const streetsApi = createApi({
     reducerPath: 'streetsApi',
@@ -20,7 +20,7 @@ export const streetsApi = createApi({
             }),
         }),
     }),
-    
+
 })
 
 export const { useGetByPostcodeMutation } = streetsApi
