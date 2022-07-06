@@ -1,9 +1,11 @@
-
 import React from "react"
 import { StyleProp, View, ViewStyle, Text, ScrollView, useWindowDimensions, TouchableOpacity } from "react-native"
 import { trashCan } from "./utils/Images"
 import { useDispatch } from 'react-redux';
 import { remove } from "../store/historySlice";
+import uuid from "react-native-uuid";
+
+// cards with "saved" form submits
 
 export interface ISaved {
     id: string,
@@ -31,25 +33,25 @@ export const SavedHistoryItem = (props: {
         <View style={[
             {
                 marginBottom: 10, flex: 1, borderWidth: 1, borderColor: "white", backgroundColor: "rgba(159, 90, 253, 0.3)",
+                flexDirection: "row", justifyContent: "space-between"
             }
         ]}>
             <View style={[{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: "column",
             }]}>
-                <Text style={[{ padding: 10, fontSize: 15 / fontScale, color: "white" }]}>
+                <Text style={[{ padding: 5, fontSize: 15 / fontScale, color: "white" }]}>
                     {props.item.address}
                 </Text>
-                <TouchableOpacity style={[{
-                    height: "100%"
-                }]}
-                    onPressOut={() => dispatch(remove(props.item.id))}>
-                    {trashCan}
-                </TouchableOpacity>
+                <Text style={[{ padding: 5, fontSize: 15 / fontScale, color: "white" }]}>
+                    Time at address: {dateFormat}
+                </Text>
             </View>
-            <Text style={[{ padding: 10, fontSize: 15 / fontScale, color: "white" }]}>
-                Time at address: {dateFormat}
-            </Text>
+            <TouchableOpacity style={[{
+                flex: 1
+            }]}
+                onPressOut={() => dispatch(remove(props.item.id))}>
+                {trashCan}
+            </TouchableOpacity>
         </View>
     )
 }
@@ -60,7 +62,7 @@ export const SavedHistory = (props: {
     data: ISaved[]
 }) => {
     const historyToRender = props.data.map((value, index) =>
-        <SavedHistoryItem item={value} />
+        <SavedHistoryItem key={uuid.v4().toString()} item={value} />
     )
     return (
         <ScrollView style={props.style}>

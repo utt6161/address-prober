@@ -1,5 +1,7 @@
 import { View, Image } from "react-native"
 
+// helper thingies to import images
+
 export const chevronDown =
     <View style={[{ marginTop: "auto", marginBottom: "auto" }]}>
         <Image style={{ width: 15, height: 10 }}
@@ -25,5 +27,5 @@ export const doubleChevron = <View style={[{ marginTop: "auto", marginBottom: "a
 export const trashCan = <View style={[{ marginTop: "auto", marginBottom: "auto" }]}>
     <Image
         source={require("../../assets/images/delete.png")}
-        style={{ width: 15, height: 20, margin: 15 }} />
+        style={{ width: 15, height: 20 }} />
 </View>

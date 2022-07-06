@@ -2,6 +2,8 @@ import { StyleSheet, Dimensions } from "react-native"
 
 
 // styles that are computed
+// the best i could think of without spending
+// a week writing my own bootstrap and such
 export const cStyles = (fontScale: number, width: number) => StyleSheet.create({
     form: {
         width: width < 768 ? "100%" : "85%",
@@ -15,6 +17,12 @@ export const cStyles = (fontScale: number, width: number) => StyleSheet.create({
     }
 
 });
+
+// most of the styles are inlined due to inconsistency of usage.
+// gotta think of the better way of organizing the styles.
+// probably figuring out the layout and such before hand is the best idea, yet i didnt follow.
+// so called ТЗ didn't have any PS images to measure things
+// and be clear, so yeah.
 
 export const sharedStyles = StyleSheet.create({
     content: {

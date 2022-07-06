@@ -1,11 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useWindowDimensions, TextInput, View, StyleSheet, Text, TouchableOpacity, StyleProp, ViewStyle, Keyboard } from "react-native"
+import { useWindowDimensions, TextInput, View, StyleSheet, Text, TouchableOpacity, StyleProp, ViewStyle } from "react-native"
 import { useSelector } from "react-redux";
 import { getAdds } from "../../store/historySlice";
 import { chevronDown } from "../utils/Images";
-
-// const strToNum = (textInput: string): number =>
-//     Number.parseInt(textInput.replace(/[^0-9]/g, ""))
 
 export enum PickerType {
     MONTH = "Month",
@@ -21,6 +18,9 @@ interface INumPicker {
 
 const yearLimit = 120
 const monthLimit = 12
+
+// component for picking either month or a year with
+// restrictions
 
 export const YearMonthPicker = (props: INumPicker) => {
     const [visible, setVisible] = useState(false);

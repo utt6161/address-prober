@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { StyleProp, View, ViewStyle, Text, Image, useWindowDimensions } from "react-native";
-import { cStyles } from "../../styles/styles"
 import { PickerType, YearMonthPicker } from "./YearMonthPicker"
 import { sharedStyles } from '../../styles/styles';
 
+
+// form that conitains inputs for years and months
 const LifeAtForm = (props: {
     style: StyleProp<ViewStyle> | StyleProp<ViewStyle>[],
     setYearsInput: React.Dispatch<React.SetStateAction<string>>,
@@ -11,7 +12,7 @@ const LifeAtForm = (props: {
     setMonthsInput: React.Dispatch<React.SetStateAction<string>>,
     monthsInput: string,
 }) => {
-    const { width, fontScale } = useWindowDimensions();
+    const { fontScale } = useWindowDimensions();
     return <View style={props.style}>
         <View>
             <Text

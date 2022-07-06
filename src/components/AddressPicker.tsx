@@ -5,6 +5,9 @@ import { useSelector } from 'react-redux'
 import { getAdds } from '../store/historySlice'
 import { IProperty } from '../store/interfaces'
 import { chevronDown } from './utils/Images'
+
+// address selector with modal window
+
 export const AddressPicker = (props: {
     items: IProperty[],
     setSelectedItem: React.Dispatch<React.SetStateAction<IProperty | undefined>>,

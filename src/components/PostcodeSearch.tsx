@@ -5,6 +5,8 @@ import { StyleProp, Text, TextInput, TouchableOpacity, useWindowDimensions, View
 import { IApiResponse, IProperty } from "../store/interfaces"
 import { magnifyingGlass } from "./utils/Images"
 
+// fetches search results from api endpoint using RTQ
+
 const PostcodeSearch = (props: {
     style: StyleProp<ViewStyle> | StyleProp<ViewStyle>[],
     setPostcode: React.Dispatch<React.SetStateAction<string>>,

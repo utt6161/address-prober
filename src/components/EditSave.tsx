@@ -1,5 +1,8 @@
 import React from "react"
 import { Text, StyleProp, TextInput, useWindowDimensions, View, ViewStyle } from "react-native"
+
+// four fields that are filled the moment address is picked
+
 export const EditSave = (props: {
     style: StyleProp<ViewStyle> | StyleProp<ViewStyle>[],
     setEditAddrLineI: React.Dispatch<React.SetStateAction<string>>,
@@ -17,7 +20,8 @@ export const EditSave = (props: {
     }]}>
         <Text style={{
             fontSize: 15 / fontScale,
-            color: "white"
+            color: "white",
+            paddingVertical: 10
         }} >
             {headline}</Text>
     </View>
@@ -25,7 +29,7 @@ export const EditSave = (props: {
     const input = (value: string,
         setter: React.Dispatch<React.SetStateAction<string>>) =>
         <TextInput
-            style={[{ margin: 10, padding: 10, borderWidth: 1, borderColor: "white", fontSize: 20 / fontScale, color: "white" }]}
+            style={[{ flex: 1, padding: 10, borderWidth: 1, borderColor: "white", fontSize: 20 / fontScale, color: "white" }]}
             keyboardType="default"
             returnKeyType='done'
             textAlign="left"
