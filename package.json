@@ -12,9 +12,10 @@
   "dependencies": {
     "@expo-google-fonts/major-mono-display": "^0.2.2",
     "@expo-google-fonts/oxygen-mono": "^0.2.2",
-    "@gorhom/portal": "^1.0.14",
-    "@react-native-picker/picker": "2.4.0",
+    "@react-native-async-storage/async-storage": "~1.17.3",
     "@reduxjs/toolkit": "^1.8.2",
+    "@types/uuid": "^8.3.4",
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "expo": "~45.0.0",
     "expo-dev-client": "~1.0.0",
     "expo-linear-gradient": "~11.3.0",
@@ -23,9 +24,11 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
-    "react-native-config": "^1.4.6",
+    "react-native-modal": "^13.0.1",
+    "react-native-modal-selector": "^2.1.1",
     "react-native-web": "0.17.7",
-    "vercel": "^25.2.3"
+    "react-redux": "^8.0.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

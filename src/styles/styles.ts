@@ -1,9 +1,15 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet, Dimensions } from "react-native"
 
-export default StyleSheet.create({
+
+// styles that are shared
+export const cStyles = (fontScale: number, width: number) => StyleSheet.create({
     form_input_text: {
-        fontSize: 11,
+        fontSize: 11 / fontScale,
         paddingVertical: "0.6"
+    },
+    form: {
+        width: width < 768 ? "100%" : "85%",
+        paddingHorizontal: 15
     },
     white_text: {
         color: "white"
@@ -34,11 +40,11 @@ export default StyleSheet.create({
     monotext: {
         fontFamily: "OxygenMono_400Regular"
     },
-    form: {
-        width: "65%"
-    },
     headline: {
-        fontSize: 25,
+        fontSize: width < 768 ? 30 / fontScale : 40 / fontScale,
+    },
+    undertext: {
+        fontSize: width < 768 ? 15 / fontScale : 15 / fontScale,
     },
     bg_container: {
         flex: 1,
@@ -57,8 +63,16 @@ export default StyleSheet.create({
     },
     top_line: {
         paddingTop: 1,
-        marginTop: 1,
+        marginTop: 10,
         borderTopColor: "rgba(255, 255, 255, 0.35)",
         borderTopWidth: 2
     }
+
 });
+
+
+export const borderStyle = StyleSheet.create({
+    removeBorder: {
+        borderWidth: 0
+    }
+})
