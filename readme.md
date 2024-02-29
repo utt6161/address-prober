@@ -1,3 +1,7 @@
+## Description
+
+Expo mobile app that lets users based on POSTCODE fill in the rest of a Britain address
+
 ## Setup instructions
 
 ### 1.  Enter the project source code folder
